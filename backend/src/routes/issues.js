@@ -5,7 +5,7 @@ const multer = require("multer");
 const axios = require("axios");
 
 const AI_URL = process.env.AI_API_URL;
-
+console.log("AI_URL:", AI_URL);
 // Debug middleware: log all incoming requests to this router
 router.use((req, res, next) => {
   console.log("Incoming:", req.method, req.originalUrl);
