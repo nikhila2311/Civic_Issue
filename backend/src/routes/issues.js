@@ -134,18 +134,30 @@ router.post("/", upload.single("photo"), async (req, res) => {
     let confidence = 0;
 
     if (photo_url) {
-      try {
-        const aiRes = await axios.post(`${AI_URL}/classify`, {
-          image_url: photo_url,
-        });
-        if (aiRes && aiRes.data) {
-          ai_category = aiRes.data.category || ai_category;
-          confidence = aiRes.data.confidence || 0;
-        }
-      } catch (err) {
-        console.error("AI ERROR:", err.message);
+  try {
+    console.log("Calling AI:", `${AI_URL}/classify`);
+    console.log("Image URL:", photo_url);
+
+    const aiRes = await axios.post(
+      `${AI_URL}/classify`,
+      { image_url: photo_url },
+      {
+        timeout: 20000, // 🔥 VERY IMPORTANT (fixes Render sleep issue)
+        headers: { "Content-Type": "application/json" }
       }
+    );
+
+    console.log("AI RESPONSE:", aiRes.data);
+
+    if (aiRes && aiRes.data && aiRes.data.category !== "unknown") {
+      ai_category = aiRes.data.category;
+      confidence = aiRes.data.confidence ?? 0;
     }
+
+  } catch (err) {
+    console.error("AI ERROR:", err.message);
+  }
+}
 
     let department = "general";
 
