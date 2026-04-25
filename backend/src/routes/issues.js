@@ -4,7 +4,7 @@ const supabase = require("../config/supabase");
 const multer = require("multer");
 const axios = require("axios");
 
-const AI_URL = process.env.AI_SERVICE_URL;
+const AI_URL = process.env.AI_API_URL;
 
 // Debug middleware: log all incoming requests to this router
 router.use((req, res, next) => {
