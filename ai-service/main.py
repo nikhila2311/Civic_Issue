@@ -39,50 +39,45 @@ def classify(request: ImageRequest):
         print("STEP 1: Received request")
         print("Image URL:", request.image_url)
 
-        # Build Roboflow URL
         rf_url = f"{ROBOFLOW_MODEL_URL}?api_key={ROBOFLOW_API_KEY}&image={request.image_url}"
 
         print("STEP 2: Sending request to Roboflow...")
         print("Roboflow URL:", rf_url)
 
-        # Increase timeout (important)
-        rf_response = requests.post(rf_url, timeout=15)
+        try:
+            rf_response = requests.post(rf_url, timeout=30)
+            rf_response.raise_for_status()
+            data = rf_response.json()
+        except Exception as e:
+            print("Roboflow ERROR:", str(e))
+            return {
+                "category": "unknown",
+                "confidence": None
+            }
 
         print("STEP 3: Response received")
-        print("Status Code:", rf_response.status_code)
-        print("Raw Response:", rf_response.text)
-
-        rf_response.raise_for_status()
-        data = rf_response.json()
-
         print("Parsed JSON:", data)
 
-        # 🔍 Extract predictions
         predictions = data.get("predictions", [])
 
         if predictions:
-            # Pick highest confidence detection
             top = max(predictions, key=lambda x: x.get("confidence", 0))
 
             raw_category = top.get("class", "other").lower().strip()
-
-            # 🔥 Fix: handle "pothole 0"
             raw_category = raw_category.split()[0]
 
-            # Normalize labels
             mapping = {
                 "pothole": "pothole",
                 "potholes": "pothole",
                 "garbage": "garbage",
                 "trash": "garbage",
-                "broken": "streetlight",  # fallback for "broken streetlight"
+                "broken": "streetlight",
                 "streetlight": "streetlight",
                 "water": "water_leakage",
                 "leakage": "water_leakage"
             }
 
             category = mapping.get(raw_category, raw_category)
-
             confidence = float(top.get("confidence", 0.0))
 
             return {
@@ -90,7 +85,6 @@ def classify(request: ImageRequest):
                 "confidence": confidence
             }
 
-        # ❗ No detections
         return {
             "category": "unknown",
             "confidence": None
@@ -102,5 +96,3 @@ def classify(request: ImageRequest):
             "category": "unavailable",
             "confidence": None
         }
-
-
