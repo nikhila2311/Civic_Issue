@@ -1,289 +1,213 @@
-🏙️ Smart City Public Issue Reporting System
+# 🏙️ Smart City Public Issue Reporting System
 
-A full-stack AI-powered web application that enables citizens to report public infrastructure issues such as potholes, broken streetlights, garbage accumulation, and water leakages. The system automatically classifies reported issues using Computer Vision, assigns them to the appropriate government department, and allows both citizens and administrators to track issue resolution in real time.
+An AI-powered smart city platform that enables citizens to report public infrastructure issues such as potholes, garbage accumulation, water leakages, broken streetlights, and more. The system automatically classifies issues using AI, assigns them to the appropriate department, and allows real-time tracking until resolution.
 
-🚀 Features
-👤 Citizen Portal
-User registration with Email OTP verification
-Secure JWT-based authentication
-Report issues with:
-Image upload
-Description
-Automatic location detection
-AI-powered issue classification
-Automatic ticket generation
-Track issue status
-Dashboard with issue statistics
-Resolution history
-Email notifications on status updates
-🛠️ Admin Portal
-Secure admin authentication
-Role-based access control
-Department-wise issue management
-Issue status updates
-Upload resolution images
-View issue locations on map
-Filter issues by:
-Status
-Category
-Department
-Email notifications to citizens after updates
-🤖 AI Module
-Image classification using Roboflow
-Automatic issue categorization
-Confidence score generation
-Severity estimation
-Duplicate issue detection based on location
-Fallback mechanism when AI service is unavailable
-🏗️ System Architecture
-                User
-                  │
-                  ▼
-          React Frontend
-                  │
-        Axios HTTP Requests
-                  │
-                  ▼
-          Express.js Backend
-        ┌─────────┴──────────┐
-        │                    │
-        ▼                    ▼
- Supabase Database     Supabase Storage
-        │                    │
-        └─────────┬──────────┘
-                  │
-                  ▼
-           FastAPI AI Service
-                  │
-                  ▼
-           Roboflow Model
-⚙️ Tech Stack
-Frontend
-React.js
-React Router DOM
-Axios
-HTML
-CSS
-JavaScript
-Backend
-Node.js
-Express.js
-JWT Authentication
-Multer
-Bcrypt
-Database
-Supabase (PostgreSQL)
-Storage
-Supabase Storage
-AI Service
-FastAPI
-Roboflow Model
-Email Service
-Resend API
-📂 Project Structure
-Smart-City-Public-System/
-│
-├── frontend/
-│   ├── components/
-│   ├── pages/
-│   ├── context/
-│   ├── routes/
-│   └── services/
-│
-├── backend/
-│   ├── routes/
-│   ├── middleware/
-│   ├── controllers/
-│   ├── utils/
-│   └── services/
-│
-├── ai-service/
-│   ├── FastAPI
-│   ├── Roboflow Integration
-│   └── Prediction APIs
-│
-└── README.md
-🔄 Project Workflow
-User Registration
+---
+
+## ✨ Features
+
+### 👥 Citizen Portal
+- Secure user registration with Email OTP verification
+- JWT-based authentication
+- Report issues with image, description, and location
+- AI-based issue categorization
+- Automatic ticket generation
+- Track issue status in real time
+- View issue history and dashboard statistics
+- Email notifications for status updates
+
+### 🛠️ Admin Portal
+- Secure admin authentication
+- Role-based access control
+- Department-wise issue management
+- Update issue status
+- Upload resolution images
+- Interactive dashboard with filters
+- Email notifications to citizens
+
+### 🤖 AI Module
+- Automatic image classification
+- Issue category prediction
+- Confidence score generation
+- Severity estimation
+- Duplicate issue detection
+
+---
+
+# 🏗️ Tech Stack
+
+| Category | Technologies |
+|----------|--------------|
+| Frontend | React.js, JavaScript, HTML, CSS, Axios |
+| Backend | Node.js, Express.js |
+| Database | Supabase (PostgreSQL) |
+| Storage | Supabase Storage |
+| Authentication | JWT, Bcrypt |
+| AI Service | FastAPI, Roboflow |
+| Email Service | Resend API |
+
+---
+
+# 📌 System Architecture
+
+```text
 User
    │
    ▼
-Register
+React Frontend
+   │
+Axios Requests
    │
    ▼
-OTP Generated
-   │
-   ▼
-Email Sent
-   │
-   ▼
-OTP Verification
-   │
-   ▼
-JWT Generated
-   │
-   ▼
-Dashboard
-Issue Reporting Flow
-User Uploads Image
-        │
-        ▼
-Frontend (FormData)
-        │
-        ▼
 Express Backend
+   │
+ ┌─┴───────────────┐
+ │                 │
+ ▼                 ▼
+Supabase DB   Supabase Storage
+ │                 │
+ └──────┬──────────┘
+        ▼
+ FastAPI AI Service
         │
         ▼
-Supabase Storage
-        │
-        ▼
-Image URL
-        │
-        ▼
-FastAPI AI Service
-        │
-        ▼
-Roboflow Model
-        │
-        ▼
-Category + Confidence
-        │
-        ▼
-Severity Calculation
-        │
-        ▼
-Ticket Generation
-        │
-        ▼
-Database Storage
-        │
-        ▼
-Response to User
-Admin Workflow
+ Roboflow Model
+```
+
+---
+
+# 🔄 Workflow
+
+### User Registration
+
+```
+Register
+   ↓
+Receive OTP
+   ↓
+Verify OTP
+   ↓
+JWT Generated
+   ↓
+Dashboard
+```
+
+### Issue Reporting
+
+```
+Upload Image
+      ↓
+Backend
+      ↓
+Store Image
+      ↓
+AI Classification
+      ↓
+Generate Ticket
+      ↓
+Store in Database
+      ↓
+Track Issue
+```
+
+### Admin Workflow
+
+```
 Admin Login
-      │
-      ▼
-JWT Authentication
-      │
-      ▼
+      ↓
 View Assigned Issues
-      │
-      ▼
+      ↓
 Update Status
-      │
-      ▼
+      ↓
 Upload Resolution Image
-      │
-      ▼
-Database Updated
-      │
-      ▼
-Email Notification Sent
-🔐 Security Features
-JWT Authentication
-Protected Routes
-Role-Based Authorization
-Password Hashing using Bcrypt
-Email OTP Verification
-Middleware-based Route Protection
-Secure Image Upload Handling
-Authorization Header Validation
-📸 AI-Based Image Analysis
+      ↓
+Citizen Notified
+```
 
-The uploaded issue image is processed using a dedicated AI service.
+---
 
-The workflow includes:
+# 🔐 Security Features
 
-Upload image
-Store image in Supabase Storage
-Generate public image URL
-Send image URL to FastAPI service
-FastAPI forwards request to Roboflow
-Roboflow predicts issue category
-Backend calculates severity
-Issue stored with AI prediction
-📊 Dashboard Features
-User Dashboard
-Total Issues
-Pending Issues
-In Progress Issues
-Resolved Issues
-Average Resolution Time
-Ticket Tracking
-Admin Dashboard
-Department-wise Issues
-Status Filters
-Category Filters
-Interactive Issue Management
-Resolution History
-📧 Notifications
+- JWT Authentication
+- Protected Routes
+- Role-Based Authorization
+- Password Hashing (Bcrypt)
+- Email OTP Verification
+- Middleware Authentication
+- Secure Image Upload
 
-The system automatically sends email notifications for:
+---
 
-OTP Verification
-Successful Registration
-Issue Status Updates
-Resolution Updates
-🗄️ Database
-Users
-User Information
-Authentication Details
-Verification Status
-Issues
-Ticket ID
-Description
-Category
-Severity
-Status
-Image URL
-Location
-Department
-Created Time
-Updated Time
-OTP
-Email
-OTP
-Expiry Time
-Status History
-Previous Status
-Updated Status
-Timestamp
-💡 Future Improvements
-Real-time notifications using WebSockets
-Mobile application
-AI model improvements
-Analytics dashboard
-Government department integration
-Priority-based issue assignment
-SMS notifications
-Multilingual support
-📷 Screenshots
+# 📊 Project Highlights
 
-Add screenshots here.
+- ✅ AI-powered issue classification
+- ✅ Real-time issue tracking
+- ✅ Automatic department assignment
+- ✅ Email notifications
+- ✅ Role-based admin dashboard
+- ✅ Interactive user dashboard
+- ✅ Cloud database using Supabase
+- ✅ FastAPI microservice architecture
 
-screenshots/
-├── Home.png
-├── Login.png
-├── Dashboard.png
-├── Report-Issue.png
-├── Admin-Dashboard.png
-└── Tracking.png
-🚀 Installation
-Clone Repository
-git clone https://github.com/yourusername/Smart-City-Public-System.git
+---
 
-cd Smart-City-Public-System
-Frontend
+# 📂 Project Structure
+
+```
+Smart-City-Public-System
+│
+├── frontend
+│   ├── src
+│   ├── public
+│   └── package.json
+│
+├── backend
+│   ├── routes
+│   ├── middleware
+│   ├── controllers
+│   ├── services
+│   └── package.json
+│
+├── ai-service
+│   ├── app.py
+│   ├── model
+│   └── requirements.txt
+│
+└── README.md
+```
+
+---
+
+# 🚀 Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/your-username/Smart-City-Public-System.git
+```
+
+### Frontend
+
+```bash
 cd frontend
 npm install
 npm run dev
-Backend
+```
+
+### Backend
+
+```bash
 cd backend
 npm install
 npm start
-AI Service
+```
+
+### AI Service
+
+```bash
 cd ai-service
-
 pip install -r requirements.txt
-
 uvicorn app:app --reload
+```
+
+
